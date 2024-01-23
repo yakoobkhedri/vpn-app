@@ -1,50 +1,133 @@
-<!DOCTYPE html>
+a<!DOCTYPE html>
 <html lang="fa">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="assets/css/styles.css"
+    />
+    <title>ورود</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-  <link rel='stylesheet' type='text/css' media='screen' href='assets/css/styles.css'>
-  <title>ورود</title>
-</head>
+  <body>
+    <!-- main -->
 
-<body>
+    <main class="px-4 mt-5">
+      <img alt="img" src="assets/img/Frame 14.png" class="img-fluid w-100" />
+      <h6 class="fs-14 text-dark my-4 pt-2">
+        لطفا نام‌کاربری و رمز عبور خود را وارد کنید.
+      </h6>
+      <form>
+        <div
+          class="px-3 rounded-15 h-48 d-flex align-items-center gap-2 bg-gray border mb-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+            fill="none"
+          >
+            <path
+              d="M11 11C13.5313 11 15.5833 8.94797 15.5833 6.41667C15.5833 3.88536 13.5313 1.83334 11 1.83334C8.46865 1.83334 6.41663 3.88536 6.41663 6.41667C6.41663 8.94797 8.46865 11 11 11Z"
+              stroke="#B7C1CE"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M18.8742 20.1667C18.8742 16.6192 15.345 13.75 11 13.75C6.65502 13.75 3.12585 16.6192 3.12585 20.1667"
+              stroke="#B7C1CE"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <input
+            class="fs-14 flex-grow-1 outline-none bg-transparent border-0"
+            id="userName"
+            name="userName"
+            placeholder="نام کاربری"
+          />
+        </div>
+        <div
+          class="px-3 rounded-15 h-48 d-flex align-items-center gap-2 bg-gray border mb-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+            fill="none"
+          >
+            <path
+              d="M5.5 9.16666V7.33333C5.5 4.29916 6.41667 1.83333 11 1.83333C15.5833 1.83333 16.5 4.29916 16.5 7.33333V9.16666"
+              stroke="#B7C1CE"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M15.5834 20.1667H6.41671C2.75004 20.1667 1.83337 19.25 1.83337 15.5833V13.75C1.83337 10.0833 2.75004 9.16667 6.41671 9.16667H15.5834C19.25 9.16667 20.1667 10.0833 20.1667 13.75V15.5833C20.1667 19.25 19.25 20.1667 15.5834 20.1667Z"
+              stroke="#B7C1CE"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14.6634 14.6667H14.6716"
+              stroke="#B7C1CE"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M10.9959 14.6667H11.0041"
+              stroke="#B7C1CE"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M7.3283 14.6667H7.33653"
+              stroke="#B7C1CE"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <input
+            class="fs-14 flex-grow-1 outline-none bg-transparent border-0"
+            name="userPass"
+            id="userPass"
+            placeholder="رمز عبور"
+          />
+        </div>
+        <label
+          class="d-flex align-items-center justify-content-end gap-2 cursor-pointer"
+        >
+          <input type="checkbox" name="rememberMe" class="form-check-input" />
+          <p class="mb-0 fs-14 font-bold mt-1">مرا به خاطر بسپار!</p>
+        </label>
+        <div id="loadingCont">
+          <div class="circle"></div>
+        </div>
+        <input
+          type="submit"
+          value="ورود"
+          name="submit"
+          id="submitBtn"
+          class="bg-main h-48 text-white fw-bold border-0 w-100 rounded-15 shadow1 mt-70 mb-70"
+        />
+      </form>
+    </main>
 
-  <!-- main -->
-
-  <main class="px-4 mt-5">
-    <img alt="img" src="assets/img/Frame 14.png" class="img-fluid w-100">
-    <h6 class="fs-14 text-dark my-4 pt-2">لطفا نام‌کاربری و رمز عبور خود را وارد کنید.</h6>
-    <form>
-      <div class="px-3 rounded-15 h-48 d-flex align-items-center gap-2 bg-gray border mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <path d="M11 11C13.5313 11 15.5833 8.94797 15.5833 6.41667C15.5833 3.88536 13.5313 1.83334 11 1.83334C8.46865 1.83334 6.41663 3.88536 6.41663 6.41667C6.41663 8.94797 8.46865 11 11 11Z" stroke="#B7C1CE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M18.8742 20.1667C18.8742 16.6192 15.345 13.75 11 13.75C6.65502 13.75 3.12585 16.6192 3.12585 20.1667" stroke="#B7C1CE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <input class="fs-14 flex-grow-1 outline-none bg-transparent border-0" placeholder="نام کاربری">
-      </div>
-      <div class="px-3 rounded-15 h-48 d-flex align-items-center gap-2 bg-gray border mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <path d="M5.5 9.16666V7.33333C5.5 4.29916 6.41667 1.83333 11 1.83333C15.5833 1.83333 16.5 4.29916 16.5 7.33333V9.16666" stroke="#B7C1CE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M15.5834 20.1667H6.41671C2.75004 20.1667 1.83337 19.25 1.83337 15.5833V13.75C1.83337 10.0833 2.75004 9.16667 6.41671 9.16667H15.5834C19.25 9.16667 20.1667 10.0833 20.1667 13.75V15.5833C20.1667 19.25 19.25 20.1667 15.5834 20.1667Z" stroke="#B7C1CE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14.6634 14.6667H14.6716" stroke="#B7C1CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M10.9959 14.6667H11.0041" stroke="#B7C1CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M7.3283 14.6667H7.33653" stroke="#B7C1CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <input class="fs-14 flex-grow-1 outline-none bg-transparent border-0" placeholder="رمز عبور">
-      </div>
-      <label class="d-flex align-items-center justify-content-end gap-2 cursor-pointer">
-        <input type="checkbox" class="form-check-input">
-        <p class="mb-0 fs-14 font-bold mt-1">مرا به خاطر بسپار!</p>
-      </label>
-      <input type="submit" value="ورود" class="bg-main h-48 text-white fw-bold border-0 w-100 rounded-15 shadow1 mt-70 mb-70">
-    </form>
-  </main>
-
-  <script src="assets/js/jquery-3.7.1.min.js"></script>
-  <script src="assets/js/scripts.js"></script>
-  <script src="assets/js/bootstrap.bundle.min.js"></script>
-</body>
-
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
