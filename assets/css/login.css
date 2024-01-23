@@ -1,0 +1,24 @@
+#loadingCont {
+  width: 100px;
+  height: 100px;
+  background-color: #c2c1c1;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #0000002b;
+  position: relative;
+  animation: loadingCont 3s linear infinite;
+  transform: rotate(0);
+  text-align: center;
+  margin: 0 auto;
+  display: none;
+}
+#loadingCont.active {
+  display: block;
+}
+#loadingCont .circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #0f64fd;
+  animation: circleDiv 0.5s linear alternate infinite;
+  transform: translateX(5px);
+}
