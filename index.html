@@ -23,6 +23,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
     <title>صفحه اصلی</title>
   </head>
 
@@ -39,6 +40,7 @@
           کاربر جدید
         </h5>
         <button
+          id="addUserCloseDropDown"
           class="font-bold fs-14 border-0 bg-transparent"
           type="button"
           data-bs-dismiss="offcanvas"
@@ -49,10 +51,13 @@
       </div>
       <div class="offcanvas-body small">
         <form
-          id="addProductForm"
+          id="addUserForm"
           class="d-flex flex-column justify-content-between h-100"
         >
           <div>
+            <div id="alert">
+              <p></p>
+            </div>
             <div
               class="px-3 rounded-15 h-48 d-flex align-items-center gap-2 bg-gray border mb-3"
             >
@@ -79,19 +84,21 @@
                 ></path>
               </svg>
               <input
-                id="productUserName"
+                id="addUserEmail"
+                type="email"
                 class="fs-14 flex-grow-1 outline-none bg-transparent border-0 text-muted"
-                placeholder="نام کاربری"
+                placeholder="ایمیل"
               />
             </div>
             <div class="row mx-0 align-items-center mb-3">
               <div class="col-6">
                 <label class="d-flex align-items-center gap-2 cursor-pointer">
                   <input
-                    id="productVip"
+                    id="userVip"
                     type="radio"
                     name="vip"
                     class="form-check-input"
+                    checked
                   />
                   <p class="font-bold fs-14 mb-0 mt-1">VIP</p>
                 </label>
@@ -99,7 +106,7 @@
               <div class="col-6">
                 <label class="d-flex align-items-center gap-2 cursor-pointer">
                   <input
-                    id="productVipPlus"
+                    id="userVipPlus"
                     type="radio"
                     name="vip"
                     class="form-check-input"
@@ -194,7 +201,7 @@
                     stroke-linejoin="round"
                   />
                 </svg>
-                <p class="fs-14 text-muted mb-0">مدت سرویس</p>
+                <p id="addUserDate" class="fs-14 text-muted mb-0">مدت سرویس</p>
                 <svg
                   class="d-block me-auto"
                   xmlns="http://www.w3.org/2000/svg"
@@ -215,12 +222,9 @@
               </div>
               <!-- dropdown -->
               <ul
+                id="addUserExpire"
                 class="bg-white dropdownContent z-10 rounded-10 mt-3 w-100 shadow-sm position-absolute end-0 start-0 list-unstyled px-4 mb-0 fs-14 text-dark"
-              >
-                <li class="py-3 cursor-pointer border-bottom">30 روز</li>
-                <li class="py-3 cursor-pointer border-bottom">60 روز</li>
-                <li class="py-3 cursor-pointer">بی نهایت</li>
-              </ul>
+              ></ul>
             </div>
             <div class="position-relative mb-3">
               <div
@@ -269,23 +273,18 @@
               </div>
               <!-- dropdown -->
               <ul
+                id="addUserSize"
                 class="bg-white dropdownContent z-10 rounded-10 mt-3 w-100 shadow-sm position-absolute end-0 start-0 list-unstyled px-4 mb-0 fs-14 text-dark"
               >
-                <li
-                  id="productSizeSelected"
-                  class="py-3 cursor-pointer border-bottom"
-                >
+                <!-- <li id="addUserSize" class="py-3 cursor-pointer border-bottom">
                   20 گیگابایت
                 </li>
-                <li
-                  id="productSizeSelected"
-                  class="py-3 cursor-pointer border-bottom"
-                >
+                <li id="addUserSize" class="py-3 cursor-pointer border-bottom">
                   60 گیگابایت
                 </li>
-                <li id="productSizeSelected" class="py-3 cursor-pointer">
+                <li id="addUserSize" class="py-3 cursor-pointer">
                   100 گیگابایت
-                </li>
+                </li> -->
               </ul>
             </div>
             <div class="d-flex align-items-center justify-content-between">
@@ -332,7 +331,7 @@
                 class="rounded-15 h-48 w-155 d-flex align-items-center border px-3"
               >
                 <button
-                  id="plusUserPcs"
+                  id="addUserPlus"
                   class="d-flex align-items-center justify-content-center border-0 bg-transparent"
                 >
                   <svg
@@ -360,11 +359,13 @@
                 </button>
                 <input
                   type="number"
-                  value="2"
+                  value="1"
+                  min="1"
+                  id="addUserPcs"
                   class="w-100 d-block outline-none text-center border-0"
                 />
                 <button
-                  id="nagativeUserPcs"
+                  id="addUserMinus"
                   class="d-flex align-items-center justify-content-center border-0 bg-transparent"
                 >
                   <svg
@@ -388,6 +389,7 @@
           </div>
           <input
             type="submit"
+            id="addUserBtn"
             value="ذخیره"
             class="bg-main h-48 text-white fw-bold border-0 w-100 rounded-15 shadow1 mb-2"
           />
@@ -417,7 +419,7 @@
       </div>
       <div class="offcanvas-body small">
         <form
-          id="editProductForm"
+          id="editUserForm"
           class="d-flex flex-column justify-content-between h-100"
         >
           <div>
@@ -449,7 +451,7 @@
               <input
                 class="fs-14 flex-grow-1 outline-none bg-transparent border-0"
                 placeholder="نام کاربری"
-                id="editProductName"
+                id="editUserName"
                 value="godverrdi"
               />
             </div>
@@ -460,7 +462,7 @@
                     type="radio"
                     name="vip"
                     class="form-check-input"
-                    id="editProductVip"
+                    id="editUserVip"
                     checked
                   />
                   <p class="font-bold fs-14 mb-0 mt-1">VIP</p>
@@ -471,7 +473,7 @@
                   <input
                     type="radio"
                     name="vip"
-                    id="editProductVipPlus"
+                    id="editUserVipPlus"
                     class="form-check-input"
                   />
                   <p class="font-bold fs-14 mb-0 mt-1">VIP+</p>
@@ -588,18 +590,18 @@
                 class="bg-white dropdownContent z-10 rounded-10 mt-3 w-100 shadow-sm position-absolute end-0 start-0 list-unstyled px-4 mb-0 fs-14 text-dark"
               >
                 <li
-                  id="editProductDateExpire"
+                  id="editUserDateExpire"
                   class="py-3 cursor-pointer border-bottom"
                 >
                   30 روز
                 </li>
                 <li
-                  id="editProductDateExpire"
+                  id="editUserDateExpire"
                   class="py-3 cursor-pointer border-bottom"
                 >
                   60 روز
                 </li>
-                <li id="editProductDateExpire" class="py-3 cursor-pointer">
+                <li id="editUserDateExpire" class="py-3 cursor-pointer">
                   بی نهایت
                 </li>
               </ul>
@@ -630,7 +632,7 @@
                     stroke-linejoin="round"
                   />
                 </svg>
-                <p id="editProductSizeContent" class="fs-14 text-dark mb-0">
+                <p id="editUserSizeContent" class="fs-14 text-dark mb-0">
                   100 گیگابایت
                 </p>
                 <svg
@@ -656,18 +658,21 @@
                 class="bg-white dropdownContent z-10 rounded-10 mt-3 w-100 shadow-sm position-absolute end-0 start-0 list-unstyled px-4 mb-0 fs-14 text-dark"
               >
                 <li
-                  id="editProductSize"
+                  data-editUserSize="editUserSize"
                   class="py-3 cursor-pointer border-bottom"
                 >
                   20 گیگابایت
                 </li>
                 <li
-                  id="editProductSize"
+                  data-editUserSize="editUserSize"
                   class="py-3 cursor-pointer border-bottom"
                 >
                   60 گیگابایت
                 </li>
-                <li id="editProductSize" class="py-3 cursor-pointer">
+                <li
+                  data-editUserSize="editUserSize"
+                  class="py-3 cursor-pointer"
+                >
                   100 گیگابایت
                 </li>
               </ul>
@@ -717,7 +722,7 @@
               >
                 <button
                   class="d-flex align-items-center justify-content-center border-0 bg-transparent"
-                  id="editProductPcsMinus"
+                  id="editUserPcsMinus"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -745,11 +750,11 @@
                 <input
                   type="number"
                   value="2"
-                  id="editProductPcsVal"
+                  id="editUserPcsVal"
                   class="w-100 d-block outline-none text-center border-0"
                 />
                 <button
-                  id="editProductPcsPlus"
+                  id="editUserPcsPlus"
                   class="d-flex align-items-center justify-content-center border-0 bg-transparent"
                 >
                   <svg
@@ -826,7 +831,7 @@
           </div>
         </form>
       </div>
-    </div> 
+    </div>
     <div id="qrCodeContainer" class="w-100 h-100">
       <button id="closeQrCodeCont" class="fa fa-remove text-white"></button>
       <div class="qrCodeImg"></div>
@@ -869,7 +874,12 @@
                     ></progress>
                   </div>
                   <div class="progress-bar credit mx-auto position-relative">
-                    <p class="fs-14 text-main fw-bold mb-0">فعال</p>
+                    <p
+                      id="activeStatusUserAccount"
+                      class="fs-14 text-main fw-bold mb-0"
+                    >
+                      فعال
+                    </p>
                     <progress
                       value="75"
                       min="0"
@@ -897,7 +907,7 @@
                     />
                   </svg>
                   <div class="fs-12">
-                    <p id="productSize" class="font-bold mb-2"></p>
+                    <p id="userSize" class="font-bold mb-2"></p>
                     <p class="mb-0 text-muted">حجم سرویس</p>
                   </div>
                 </div>
@@ -919,7 +929,7 @@
                     />
                   </svg>
                   <div class="fs-12">
-                    <p id="productExpire" class="font-bold mb-2"></p>
+                    <p id="userExpire" class="font-bold mb-2">نامشخص</p>
                     <p class="mb-0 text-muted">اعتبار سرویس</p>
                   </div>
                 </div>
@@ -929,7 +939,7 @@
               class="d-flex align-items-center justify-content-between gap-3 mb-4"
             >
               <a
-                id="statusProductLink"
+                id="statusUserLink"
                 class="d-flex align-items-center justify-content-center gap-2 border rounded-15 h-48 flex-grow-1"
               >
                 <svg
@@ -1064,9 +1074,7 @@
               </svg>
               <p class="fs-14 text-dark mb-0">نام کاربری</p>
               <div class="d-flex align-items-center gap-2 me-auto">
-                <p id="isVipProduct" class="mb-0 fs-12 text-muted fw-bold">
-                  VIP
-                </p>
+                <p id="isVipUser" class="mb-0 fs-12 text-muted fw-bold">VIP</p>
                 <svg
                   width="6"
                   height="7"
@@ -1076,7 +1084,10 @@
                 >
                   <rect y="0.5" width="6" height="6" rx="3" fill="#B7C1CE" />
                 </svg>
-                <p id="productName" class="fs-14 text-dark mb-0 fw-bold"></p>
+                <p
+                  id="userNameProduct"
+                  class="fs-14 text-dark mb-0 fw-bold"
+                ></p>
               </div>
             </div>
             <div class="position-relative mb-3">
@@ -1160,11 +1171,9 @@
                   />
                 </svg>
                 <p class="fs-14 text-dark mb-0">تاریخ خرید سرویس</p>
-                <p
-                  id="productDate"
-                  class="fs-14 text-dark mb-0 me-auto"
-                  dir="ltr"
-                ></p>
+                <p id="userDate" class="fs-14 text-dark mb-0 me-auto" dir="ltr">
+                  نامشخص
+                </p>
               </div>
             </div>
             <div class="position-relative mb-3">
@@ -1208,7 +1217,7 @@
                   />
                 </svg>
                 <p class="fs-14 text-dark mb-0">تعداد کاربر</p>
-                <p id="productUsers" class="fs-14 text-dark mb-0 me-auto"></p>
+                <p id="usersPcs" class="fs-14 text-dark mb-0 me-auto">نامشخص</p>
               </div>
             </div>
           </div>
@@ -1240,7 +1249,7 @@
                 class="img-fluid"
               />
             </div>
-            <p class="font-bold text-white mb-0">john_doe</p>
+            <p id="adminName" class="font-bold text-white mb-0"></p>
           </div>
           <div
             id="headerContent"
@@ -1275,7 +1284,7 @@
               </svg>
             </div>
             <div class="text-white position-relative z-10">
-              <p class="fw-bold fs-18 mb-1">7.1 گیگابایت</p>
+              <p id="adminAmount" class="fw-bold fs-18 mb-1"></p>
               <p class="fs-12 opacity-70 mb-0">حجم باقی مانده</p>
             </div>
           </div>
@@ -1286,32 +1295,35 @@
           <div
             class="rounded-15 bg-white h-48 d-flex align-items-center gap-2 border flex-grow-1 shadow2 px-3"
           >
-            <svg
-              class="cursor-pointer"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                stroke="#B7C1CE"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M22 22L20 20"
-                stroke="#B7C1CE"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+            <div id="searchIconBtn">
+              <svg
+                class="cursor-pointer"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                  stroke="#B7C1CE"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M22 22L20 20"
+                  stroke="#B7C1CE"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+
             <input
               placeholder="جستجو"
-              id="searchProduct"
+              id="searchUser"
               type="search"
               class="w-100 h-100 outline-none bg-transparent border-0 flex-grow-1 fs-14"
             />
@@ -1390,12 +1402,24 @@
             </ul>
           </div>
         </form>
-        <div id="productCont" class="mt-4 pb-5 mb-5">
-          <div class="loadingCont">
-            <div class="circle"></div>
-          </div>
-          <div class="emptyListCont">
-            <p class="text-center">لیست خالیه !!</p>
+        <div id="userCont" class="mt-4 pb-5 mb-5">
+          <div class="efects">
+            <div class="loadingCont">
+              <div class="circle"></div>
+            </div>
+            <div class="emptyListCont">
+              <p class="text-center">لیست خالیه !!</p>
+            </div>
+            <div id="unsetKey">
+              <p class="text-center">
+                دوباره
+                <a class="font-bold text-danger" href="./login.html">لاگین </a>
+                کنید !!!
+              </p>
+            </div>
+            <div id="userContAlert">
+              <p>asdasd</p>
+            </div>
           </div>
         </div>
       </div>

@@ -10,6 +10,8 @@
       media="screen"
       href="assets/css/styles.css"
     />
+    <link rel="stylesheet" href="assets/css/login.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jalali-moment@3.2.3/dist/jalali-moment.browser.js"></script>
     <title>ورود</title>
   </head>
 
@@ -21,7 +23,11 @@
       <h6 class="fs-14 text-dark my-4 pt-2">
         لطفا نام‌کاربری و رمز عبور خود را وارد کنید.
       </h6>
+
       <form>
+        <div id="alert" class="text-center">
+          <p id="textShowing"></p>
+        </div>
         <div
           class="px-3 rounded-15 h-48 d-flex align-items-center gap-2 bg-gray border mb-3"
         >
@@ -51,6 +57,7 @@
             class="fs-14 flex-grow-1 outline-none bg-transparent border-0"
             id="userName"
             name="userName"
+            type="text"
             placeholder="نام کاربری"
           />
         </div>
@@ -104,25 +111,30 @@
             class="fs-14 flex-grow-1 outline-none bg-transparent border-0"
             name="userPass"
             id="userPass"
+            type="password"
             placeholder="رمز عبور"
           />
         </div>
         <label
           class="d-flex align-items-center justify-content-end gap-2 cursor-pointer"
         >
-          <input type="checkbox" name="rememberMe" class="form-check-input" />
+          <input
+            type="checkbox"
+            id="rememberMe"
+            name="rememberMe"
+            class="form-check-input"
+          />
           <p class="mb-0 fs-14 font-bold mt-1">مرا به خاطر بسپار!</p>
         </label>
-        <div id="loadingCont">
-          <div class="circle"></div>
-        </div>
-        <input
+        <button
           type="submit"
-          value="ورود"
           name="submit"
           id="submitBtn"
           class="bg-main h-48 text-white fw-bold border-0 w-100 rounded-15 shadow1 mt-70 mb-70"
-        />
+        >
+          ورود
+          <div id="loading"></div>
+        </button>
       </form>
     </main>
 

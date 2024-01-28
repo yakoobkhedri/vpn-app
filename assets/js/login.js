@@ -1,17 +1,39 @@
-const userName = document.querySelector("#userName");
-const userPass = document.querySelector("#userPass");
-const form = document.querySelector("form");
-const loadingCont = document.querySelector("#loadingCont");
+const form = document.querySelector("form"),
+  userName = document.querySelector("#userName"),
+  userPass = document.querySelector("#userPass"),
+  rememberMe = document.querySelector("#rememberMe"),
+  submitBtn = document.querySelector("#submitBtn"),
+  alertCont = document.querySelector("#alert");
 
-function setKeyCookie(cname, cvalue, exdays) {
+let isLoginSuccess = false;
+
+const setCookie = (cname, cvalue, exdays) => {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   let expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-async function postData(api, userName, userPass) {
-  loadingCont.classList.add("active");
-  let keyRes = await await fetch(api, {
+};
+const getCookie = (cname) => {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+};
+const postData = async (api, userName, userPass) => {
+  submitBtn.classList.add("submited");
+  alertCont.classList.remove("danger");
+  alertCont.classList.remove("warning");
+  alertCont.children[0].textContent = "";
+  let keyRes = await fetch(api, {
     method: "POST",
     headers: {
       Accept: "*/*",
@@ -23,24 +45,45 @@ async function postData(api, userName, userPass) {
     }),
   });
   let keyJon = await keyRes.json();
-  console.log(keyJon.token);
-  console.log(keyRes.ok);
+  submitBtn.classList.remove("submited");
   if (keyRes.ok) {
-    setKeyCookie("key", keyJon.token, 10);
+    setCookie("key", keyJon.token, 10);
+    isLoginSuccess = true;
     let a = document.createElement("a");
     a.href = "./index.html";
+
     a.click();
-    a.remove();
   } else {
-    alert("error");
+    alertCont.classList.add("danger");
+    alertCont.classList.remove("warning");
+    alertCont.children[0].textContent = "نام و رمز عبور خود را چک کنید !!!";
   }
-  loadingCont.classList.remove("active");
+};
+const isSetRemember = () => {
+  if (!rememberMe.checked || !isLoginSuccess) return;
+  let data = {
+    userN: userName.value.trim(),
+  };
+  setCookie("rememeberMeSet", JSON.stringify(data), 10);
+};
+
+if (getCookie("rememeberMeSet")) {
+  let data = JSON.parse(getCookie("rememeberMeSet"));
+  userName.value = data.userN;
+  rememberMe.checked = true;
 }
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  if (!navigator.onLine) {
+    alertCont.classList.add("warning");
+    alertCont.classList.remove("danger");
+    alertCont.children[0].textContent = "افلاین هستید !!!";
+    return;
+  } else if (submitBtn.classList.contains("submited")) return;
   postData(
     `https://api.kotah.sbs/admin/login`,
     userName.value.trim(),
     userPass.value.trim()
   );
+  isSetRemember();
 });
