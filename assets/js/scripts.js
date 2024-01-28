@@ -9,7 +9,7 @@ const main = () => {
       document.querySelectorAll(".dropdownContent li")
     );
 
-  const showUser = document.getElementById("show-user"),
+  const showUsers = document.getElementById("show-user"),
     showAvatar = document.getElementById("show-avatar"),
     mainHoverSvg = Array.from(
       document.getElementsByClassName("main-hover-svg")
@@ -45,6 +45,7 @@ const main = () => {
     editUserPcsMinus = document.querySelector("#editUserPcsMinus"),
     editUserPcsVal = document.querySelector("#editUserPcsVal"),
     editUserPcsPlus = document.querySelector("#editUserPcsPlus");
+  const loadingCont = document.querySelector(".loadingCont");
 
   let users,
     indexTargetItem,
@@ -86,32 +87,32 @@ const main = () => {
   );
   const key = getCookie("key");
   if (key) isSetKey = true;
-  const setValueAsGb = (index, isTraffic = false) => {
+  const setValueAsGb = (index, usersList, isTraffic = false) => {
     let traffic;
     let used;
     if (isTraffic) {
-      if (String(users.data[index].info.traffic).includes("TB")) {
+      if (String(usersList[index].info.traffic).includes("TB")) {
         traffic =
-          Number(users.data[index].info.traffic.replace("TB", "")) * 10 ** +3;
-      } else if (String(users.data[index].info.traffic).includes("GB")) {
-        traffic = Number(users.data[index].info.traffic.replace("GB", ""));
-      } else if (String(users.data[index].info.traffic).includes("MB")) {
+          Number(usersList[index].info.traffic.replace("TB", "")) * 10 ** +3;
+      } else if (String(usersList[index].info.traffic).includes("GB")) {
+        traffic = Number(usersList[index].info.traffic.replace("GB", ""));
+      } else if (String(usersList[index].info.traffic).includes("MB")) {
         traffic =
-          Number(users.data[index].info.traffic.replace("MB", "")) * 10 ** -3;
-      } else if (String(users.data[index].info.traffic).includes("KB")) {
+          Number(usersList[index].info.traffic.replace("MB", "")) * 10 ** -3;
+      } else if (String(usersList[index].info.traffic).includes("KB")) {
         traffic =
-          Number(users.data[index].info.traffic.replace("KB", "")) * 10 ** -6;
+          Number(usersList[index].info.traffic.replace("KB", "")) * 10 ** -6;
       }
       return traffic;
     }
 
-    if (String(users.data[index].info.used).includes("TB")) {
-      used = Number(users.data[index].info.used.replace("TB", "")) * 10 ** +3;
-    } else if (String(users.data[index].info.used).includes("GB")) {
-      used = Number(users.data[index].info.used.replace("GB", ""));
-    } else if (String(users.data[index].info.used).includes("MB")) {
-      used = Number(users.data[index].info.used.replace("MB", "")) * 10 ** -3;
-    } else if (String(users.data[index].info.used).includes("KB")) {
+    if (String(usersList[index].info.used).includes("TB")) {
+      used = Number(usersList[index].info.used.replace("TB", "")) * 10 ** +3;
+    } else if (String(usersList[index].info.used).includes("GB")) {
+      used = Number(usersList[index].info.used.replace("GB", ""));
+    } else if (String(usersList[index].info.used).includes("MB")) {
+      used = Number(usersList[index].info.used.replace("MB", "")) * 10 ** -3;
+    } else if (String(usersList[index].info.used).includes("KB")) {
       used = Number(users.data[index].info.used.replace("KB", "")) * 10 ** -6;
     }
     return used;
@@ -142,8 +143,8 @@ const main = () => {
   };
   const statusFunc = (item, index) => {
     // to GB
-    let used = setValueAsGb(index);
-    let traffic = setValueAsGb(index, true);
+    let used = setValueAsGb(index, users.data);
+    let traffic = setValueAsGb(index, users.data, true);
     let usedTraf = Math.abs((used / traffic) * 100 - 100);
     $(
       ".progress-bar.value"
@@ -180,7 +181,11 @@ const main = () => {
   };
   const userEditFun = (item, index) => {
     editUserName.value = users.data[index].email;
-    editUserSizeContent.textContent = `${setValueAsGb(index, true)} گیگابایت`;
+    editUserSizeContent.textContent = `${setValueAsGb(
+      index,
+      users.data,
+      true
+    )} گیگابایت`;
   };
   const disableAccountFun = async (item, index, e) => {
     clickedCont += 1;
@@ -342,7 +347,6 @@ const main = () => {
     userCont.classList.remove("showEmpty");
     const usersItem = document.querySelectorAll("[data-usersitem]");
     usersItem.forEach((item) => {
-      console.log(item);
       item.remove();
     });
     let addAccountApi = await fetch(
@@ -399,14 +403,14 @@ const main = () => {
     }
   };
   setAdminStatus();
-  const setUser = async (users) => {
+  const setUser = async (usersList) => {
     userCont.classList.add("showEmpty");
     if (!isSetKey) return userCont.classList.add("unsetKeyShow");
-    if (users.data == undefined || users.data == "") return;
+    if (usersList == undefined || usersList == "") return;
     else userCont.classList.remove("showEmpty");
-    users.data.forEach((user, index) => {
-      let traffic = setValueAsGb(index, true);
-      let used = setValueAsGb(index);
+    usersList.forEach((user, index) => {
+      let traffic = setValueAsGb(index, usersList, true);
+      let used = setValueAsGb(index, usersList);
       let realTraffic = (Number(traffic) - Number(used)).toFixed(2);
       let email = user.email;
       userCont.innerHTML += ` 
@@ -565,6 +569,10 @@ const main = () => {
 
   const getUser = async () => {
     if (!isSetKey) return userCont.classList.add("unsetKeyShow");
+    const usersItem = document.querySelectorAll("[data-usersitem]");
+    usersItem.forEach((item) => {
+      item.remove();
+    });
     userCont.classList.add("loadingShow");
     users = await fetch("https://api.kotah.sbs/userAjax?page=1", {
       headers: {
@@ -578,7 +586,7 @@ const main = () => {
     });
     users = await users.json();
     userCont.classList.remove("loadingShow");
-    setUser(users);
+    setUser(users.data);
   };
   getUser();
   // dropdown
@@ -609,14 +617,46 @@ const main = () => {
     });
   });
 
-  // show user
-
-  showUser.addEventListener("click", function () {
+  // show users
+  const getUsers = async (page) => {
+    users = await fetch("https://api.kotah.sbs/userAjax?page=" + page, {
+      headers: {
+        Authorization: "Bearer " + key,
+      },
+    }).catch(() => {
+      userCont.classList.add("alertShow");
+      userCont.classList.remove("loadingShow");
+      $("#userContAlert")[0].children[0].textContent =
+        "دوباره تلاش کنید !! مشکل اتصال به سرور";
+    });
+    users = await users.json();
+  };
+  showUsers.addEventListener("click", async function () {
+    pageId = 1;
+    const usersItem = document.querySelectorAll("[data-usersitem]");
+    usersItem.forEach((item) => {
+      item.remove();
+    });
+    await getUsers(pageId);
+    userCont.classList.remove("loadingShow");
     document.querySelector(".header-container").classList.add("active");
     mainHoverSvg.forEach((items) => items.classList.remove("active"));
     this.querySelector("svg").classList.add("active");
+
+    if (!isSetKey) return userCont.classList.add("unsetKeyShow");
+    userCont.classList.add("loadingShow");
+    while (users.hasNext) {
+      if (!users.hasNext) return;
+      setUser(users.data);
+      await getUsers(pageId);
+      pageId += 1;
+      console.log(users.hasNext);
+    }
+    userCont.classList.remove("loadingShow");
   });
+
   showAvatar.addEventListener("click", function () {
+    getUser();
     document.querySelector(".header-container").classList.remove("active");
     mainHoverSvg.forEach((items) => items.classList.remove("active"));
     this.querySelector("svg").classList.add("active");
