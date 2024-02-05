@@ -160,6 +160,33 @@ body {
   max-height: 216px;
   overflow-y: auto;
 }
+#pagesUsersCont {
+  width: 100%;
+  display: none;
+}
+#userCont.allUsers #pagesUsersCont {
+  display: flex;
+}
+#pagesUsersCont #pagesUsers {
+  list-style: none;
+  width: 100%;
+}
+#pagesUsersCont #pagesUsers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+#pagesUsersCont #pagesUsers::after {
+  content: "...";
+  padding: 5px 10px;
+  box-shadow: 0 0 5px #00000059;
+}
+#pagesUsersCont #pagesUsers li button {
+  padding: 5px 10px;
+  border: 0;
+  box-shadow: 0 0 5px #00000059;
+}
+
 a {
   cursor: pointer;
   text-decoration: none;

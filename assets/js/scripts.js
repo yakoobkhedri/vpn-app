@@ -15,6 +15,8 @@ const main = () => {
       document.getElementsByClassName("main-hover-svg")
     );
 
+  const pagesUsersCont = document.querySelector("#pagesUsers");
+  const usersContainer = document.querySelector("#usersContainer");
   const userCont = document.querySelector("#userCont"),
     searchUser = document.querySelector("#searchUser"),
     statusUserLink = document.querySelector("#statusUserLink"),
@@ -91,33 +93,34 @@ const main = () => {
     let traffic;
     let used;
     if (isTraffic) {
-      if (String(usersList[index].info.traffic).includes("TB")) {
+      if (String(users.data[index].info.traffic).includes("TB")) {
         traffic =
-          Number(usersList[index].info.traffic.replace("TB", "")) * 10 ** +3;
-      } else if (String(usersList[index].info.traffic).includes("GB")) {
-        traffic = Number(usersList[index].info.traffic.replace("GB", ""));
-      } else if (String(usersList[index].info.traffic).includes("MB")) {
+          Number(users.data[index].info.traffic.replace("TB", "")) * 10 ** +3;
+      } else if (String(users.data[index].info.traffic).includes("GB")) {
+        traffic = Number(users.data[index].info.traffic.replace("GB", ""));
+      } else if (String(users.data[index].info.traffic).includes("MB")) {
         traffic =
-          Number(usersList[index].info.traffic.replace("MB", "")) * 10 ** -3;
-      } else if (String(usersList[index].info.traffic).includes("KB")) {
+          Number(users.data[index].info.traffic.replace("MB", "")) * 10 ** -3;
+      } else if (String(users.data[index].info.traffic).includes("KB")) {
         traffic =
-          Number(usersList[index].info.traffic.replace("KB", "")) * 10 ** -6;
+          Number(users.data[index].info.traffic.replace("KB", "")) * 10 ** -6;
       }
       return traffic;
     }
 
-    if (String(usersList[index].info.used).includes("TB")) {
-      used = Number(usersList[index].info.used.replace("TB", "")) * 10 ** +3;
-    } else if (String(usersList[index].info.used).includes("GB")) {
-      used = Number(usersList[index].info.used.replace("GB", ""));
-    } else if (String(usersList[index].info.used).includes("MB")) {
-      used = Number(usersList[index].info.used.replace("MB", "")) * 10 ** -3;
-    } else if (String(usersList[index].info.used).includes("KB")) {
+    if (String(users.data[index].info.used).includes("TB")) {
+      used = Number(users.data[index].info.used.replace("TB", "")) * 10 ** +3;
+    } else if (String(users.data[index].info.used).includes("GB")) {
+      used = Number(users.data[index].info.used.replace("GB", ""));
+    } else if (String(users.data[index].info.used).includes("MB")) {
+      used = Number(users.data[index].info.used.replace("MB", "")) * 10 ** -3;
+    } else if (String(users.data[index].info.used).includes("KB")) {
       used = Number(users.data[index].info.used.replace("KB", "")) * 10 ** -6;
     }
     return used;
   };
-  const searchFunc = async () => {
+  const searchFunc = async (e) => {
+    e.preventDefault();
     clearEventListener();
     usersItem = document.querySelectorAll("[data-usersItem]");
     usersItem.forEach((item) => {
@@ -403,17 +406,17 @@ const main = () => {
     }
   };
   setAdminStatus();
-  const setUser = async (usersList) => {
+  const setUser = async () => {
     userCont.classList.add("showEmpty");
     if (!isSetKey) return userCont.classList.add("unsetKeyShow");
-    if (usersList == undefined || usersList == "") return;
+    if (users.data == undefined || users.data == "") return;
     else userCont.classList.remove("showEmpty");
-    usersList.forEach((user, index) => {
-      let traffic = setValueAsGb(index, usersList, true);
-      let used = setValueAsGb(index, usersList);
+    users.data.forEach((user, index) => {
+      let traffic = setValueAsGb(index, users.data, true);
+      let used = setValueAsGb(index, users.data);
       let realTraffic = (Number(traffic) - Number(used)).toFixed(2);
       let email = user.email;
-      userCont.innerHTML += ` 
+      usersContainer.innerHTML += ` 
   <div data-usersItem="usersItem" class="rounded-15 border overflow-hidden mb-3">
    <div class="d-flex align-items-center justify-content-between bg-gray p-3">
      <div class="d-flex align-items-center gap-1">
@@ -619,7 +622,7 @@ const main = () => {
 
   // show users
   const getUsers = async (page) => {
-    users = await fetch("https://api.kotah.sbs/userAjax?page=" + page, {
+    let newUsers = await fetch("https://api.kotah.sbs/userAjax?page=" + page, {
       headers: {
         Authorization: "Bearer " + key,
       },
@@ -629,7 +632,32 @@ const main = () => {
       $("#userContAlert")[0].children[0].textContent =
         "دوباره تلاش کنید !! مشکل اتصال به سرور";
     });
-    users = await users.json();
+    return newUsers.json();
+  };
+  const setPageUsers = async () => {
+    let totalPages = Math.round(users.total/10)
+    let newUsers = await getUsers(totalPages)
+    if(newUsers.hasNext){
+      totalPages++
+    }
+    pagesUsersCont.textContent = ''
+    for (let index = 1; index <= totalPages; index++) {
+      if (index > 10) return;
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      li.appendChild(button);
+      button.textContent = index;
+      pagesUsersCont.appendChild(li);
+      button.addEventListener("click", async () => {
+        const usersItem = document.querySelectorAll("[data-usersitem]");
+        usersItem.forEach((item) => {
+          item.remove();
+        });
+        let newUsers = await getUsers(index);
+        users = newUsers;
+        setUser(users.data);
+      });
+    }
   };
   showUsers.addEventListener("click", async function () {
     pageId = 1;
@@ -638,34 +666,24 @@ const main = () => {
       item.remove();
     });
     await getUsers(pageId);
-    userCont.classList.remove("loadingShow");
+    setUser(users.data);
+    setPageUsers();
     document.querySelector(".header-container").classList.add("active");
     mainHoverSvg.forEach((items) => items.classList.remove("active"));
     this.querySelector("svg").classList.add("active");
-
-    if (!isSetKey) return userCont.classList.add("unsetKeyShow");
-    userCont.classList.add("loadingShow");
-    while (users.hasNext) {
-      if (!users.hasNext) return;
-      setUser(users.data);
-      await getUsers(pageId);
-      pageId += 1;
-      console.log(users.hasNext);
-    }
     userCont.classList.remove("loadingShow");
+    userCont.classList.add("allUsers");
   });
 
   showAvatar.addEventListener("click", function () {
     getUser();
+    userCont.classList.remove("allUsers")
     document.querySelector(".header-container").classList.remove("active");
     mainHoverSvg.forEach((items) => items.classList.remove("active"));
     this.querySelector("svg").classList.add("active");
   });
 
-  searchForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    searchFunc();
-  });
+  searchForm.addEventListener("submit",searchFunc);
   addUserForm.addEventListener("submit", (e) => {
     e.preventDefault();
   });
